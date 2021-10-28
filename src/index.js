@@ -135,7 +135,3 @@ socket.on("console output",async (msg)=>{
 		}
 	}
 });
-
-socket.once("open",()=>{
-	socket.send("send logs",null);
-});
