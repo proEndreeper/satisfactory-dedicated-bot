@@ -78,7 +78,7 @@ socket.on("console output",async (msg)=>{
 			playerSessions[userName].identity = data[5];
 		}
 		console.log(`User '${userName}' is attempting to login!`);
-		playerSessions.lastStateChange = data[1];
+		playerSessions[userName].lastStateChange = data[1];
 		playerSessions[userName].latestIdentity = data[5];
 		idToPlayerNameMap[data[5]]=userName;
 	}
@@ -93,8 +93,8 @@ socket.on("console output",async (msg)=>{
 			playerSessions[userName] = new SatisfactoryUser(userName);
 		}
 		console.log(`User '${userName}' is joining!`);
-		playerSessions.lastStateChange = data[1];
-		playerSessions.online = false;
+		playerSessions[userName].lastStateChange = data[1];
+		playerSessions[userName].online = false;
 	}
 
 	if(JoinSucceededRegex.test(msg))
@@ -106,8 +106,8 @@ socket.on("console output",async (msg)=>{
 		{
 			playerSessions[userName] = new SatisfactoryUser(userName);
 		}
-		playerSessions.lastStateChange = data[1];
-		playerSessions.online = true;
+		playerSessions[userName].lastStateChange = data[1];
+		playerSessions[userName].online = true;
 		console.log(`User '${userName}' is online!`);
 		await axios.post(process.env.DISCORD_WEBHOOK,{
 			...baseWebhook,
@@ -126,8 +126,8 @@ socket.on("console output",async (msg)=>{
 			{
 				playerSessions[userName] = new SatisfactoryUser(userName);
 			}
-			playerSessions.lastStateChange = data[1];
-			playerSessions.online = false;
+			playerSessions[userName].lastStateChange = data[1];
+			playerSessions[userName].online = false;
 			console.log(`User '${userName}' is offline!`);
 			await axios.post(process.env.DISCORD_WEBHOOK,{
 				...baseWebhook,
