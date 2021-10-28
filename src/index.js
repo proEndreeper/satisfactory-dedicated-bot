@@ -23,8 +23,9 @@ let idToPlayerNameMap = {};
 function playerCount()
 {
 	let onlineCount = 0;
-	for(let player of playerSessions)
+	for(let userName in Object.keys(playerSessions))
 	{
+		let player = playerSessions[userName];
 		if(player.online) onlineCount++;
 	}
 	return onlineCount;
