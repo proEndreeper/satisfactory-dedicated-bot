@@ -20,18 +20,7 @@ let satisfactoryVersion = "";
 let playerSessions = {};
 let idToPlayerNameMap = {};
 
-function playerCount()
-{
-	let onlineCount = 0;
-	for(let userName in Object.keys(playerSessions))
-	{
-		let player = playerSessions[userName];
-		if(player===undefined) continue;
-		if(player.online) onlineCount++;
-	}
-	return onlineCount;
-}
-
+let onlineCount = 0;
 const MAX_PLAYER_COUNT = process.env.MAX_PLAYER_COUNT;
 
 const ClientVersionRegex = /^LogInit: Net CL: /;
@@ -109,9 +98,10 @@ socket.on("console output",async (msg)=>{
 		playerSessions[userName].lastStateChange = data[1];
 		playerSessions[userName].online = true;
 		console.log(`User '${userName}' is online!`);
+		onlineCount++;
 		await axios.post(process.env.DISCORD_WEBHOOK,{
 			...baseWebhook,
-			...Messages.PlayerJoined(userName,playerCount(),MAX_PLAYER_COUNT)
+			...Messages.PlayerJoined(userName,onlineCount,MAX_PLAYER_COUNT)
 		});
 	}
 
@@ -126,17 +116,21 @@ socket.on("console output",async (msg)=>{
 			{
 				playerSessions[userName] = new SatisfactoryUser(userName);
 			}
-			playerSessions[userName].lastStateChange = data[1];
-			playerSessions[userName].online = false;
-			console.log(`User '${userName}' is offline!`);
-			await axios.post(process.env.DISCORD_WEBHOOK,{
-				...baseWebhook,
-				...Messages.PlayerLeft(userName,playerCount(),MAX_PLAYER_COUNT)
-			});
+			if(playerSessions[userName].online)
+			{
+				playerSessions[userName].lastStateChange = data[1];
+				playerSessions[userName].online = false;
+				console.log(`User '${userName}' is offline!`);
+				if(onlineCount>0) onlineCount--;
+				await axios.post(process.env.DISCORD_WEBHOOK,{
+					...baseWebhook,
+					...Messages.PlayerLeft(userName,onlineCount,MAX_PLAYER_COUNT)
+				});
+			}
 		} else {
 			await axios.post(process.env.DISCORD_WEBHOOK,{
 				...baseWebhook,
-				...Messages.GenericPlayerLeft(playerCount(),MAX_PLAYER_COUNT)
+				...Messages.GenericPlayerLeft(onlineCount,MAX_PLAYER_COUNT)
 			});
 		}
 	}
