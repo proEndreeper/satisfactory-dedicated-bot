@@ -5,19 +5,39 @@ module.exports = {
 		{
 			case "running":
 				return {
-					content: `The dedicated server is ${action} running!`
+					embeds: [
+						{
+							color: 0x00FF00,
+							description: `The dedicated server is ${action} online!`
+						}
+					]
 				}
 			case "stopping":
 				return {
-					content: `The dedicated server is ${action} stopping!`
+					embeds: [
+						{
+							color: 0xFFA500,
+							description: `The dedicated server is ${action} stopping!`
+						}
+					]
 				}
 			case "offline":
 				return {
-					content: `The dedicated server is ${action} offline!`
+					embeds: [
+						{
+							color: 0xFF0000,
+							description: `The dedicated server is ${action} offline!`
+						}
+					]
 				}
 			case "starting":
 				return {
-					content: `The dedicated server is ${action} starting!`
+					embeds: [
+						{
+							color: 0xFFFF00,
+							description: `The dedicated server is ${action} starting!`
+						}
+					]
 				}
 			default:
 				return {
@@ -27,25 +47,59 @@ module.exports = {
 	},
 	CurrentVersion: (satisfactoryVersion) => {
 		return {
-			content: `The dedicated server supports CL version ${satisfactoryVersion}`
+			embeds: [
+				{
+					description: `Current CL version ${satisfactoryVersion}`
+				}
+			]
 		};
 	},
 	PlayerJoined: (userName,playerCount,maxPlayerCount) => {
 		return {
-			content: `User '${userName}' has joined.
-There are now ${playerCount}/${maxPlayerCount} players online.`
+			embeds: [
+				{
+					color: 0x00FF00,
+					description: `User '${userName}' has joined the game.`,
+					fields: [
+						{
+							name:"Online Players",
+							value: `${playerCount}/${maxPlayerCount}`
+						}
+					]
+				}
+			]
 		};
 	},
 	GenericPlayerLeft: (playerCount,maxPlayerCount) => {
 		return {
-			content: `A user has left the game.
-There are now ${playerCount}/${maxPlayerCount} players online.`
+			embeds: [
+				{
+					color: 0xFF0000,
+					description: `A user has left the game.`,
+					fields: [
+						{
+							name:"Online Players",
+							value: `${playerCount}/${maxPlayerCount}`
+						}
+					]
+				}
+			]
 		};
 	},
 	PlayerLeft: (userName,playerCount,maxPlayerCount) => {
 		return {
-			content: `User '${userName}' has left the game.
-There are now ${playerCount}/${maxPlayerCount} players online.`
+			embeds: [
+				{
+					color: 0xFF0000,
+					description: `User '${userName}' has left the game.`,
+					fields: [
+						{
+							name:"Online Players",
+							value: `${playerCount}/${maxPlayerCount}`
+						}
+					]
+				}
+			]
 		};
 	}
 }
