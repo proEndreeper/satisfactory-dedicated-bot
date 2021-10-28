@@ -26,6 +26,7 @@ function playerCount()
 	for(let userName in Object.keys(playerSessions))
 	{
 		let player = playerSessions[userName];
+		if(player===undefined) continue;
 		if(player.online) onlineCount++;
 	}
 	return onlineCount;
