@@ -34,11 +34,13 @@ let old_status = "";
 
 socket.on("status",async (new_status)=>{
 	console.log(`Server is now '${new_status}'${old_status!==""?" was '"+old_status+"'":""}`);
-	if(old_status === "") old_status = new_status;
-	await axios.post(process.env.DISCORD_WEBHOOK,{
-		...baseWebhook,
-		...Messages.ServerStatus(new_status,old_status)
-	});
+	if(old_status !== "") 
+	{
+		await axios.post(process.env.DISCORD_WEBHOOK,{
+			...baseWebhook,
+			...Messages.ServerStatus(new_status,old_status)
+		});
+	}
 	old_status = new_status;
 });
 
@@ -127,7 +129,7 @@ socket.on("console output",async (msg)=>{
 					...Messages.PlayerLeft(userName,onlineCount,MAX_PLAYER_COUNT)
 				});
 			}
-		} else {
+		} else if(onlineCount>0) {
 			await axios.post(process.env.DISCORD_WEBHOOK,{
 				...baseWebhook,
 				...Messages.GenericPlayerLeft(onlineCount,MAX_PLAYER_COUNT)
