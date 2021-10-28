@@ -18,12 +18,14 @@ class PterodactylWebSocket extends EventEmitter
 
 	async #_connectWebsocket()
 	{
+		let newSocket = false;
 		console.log("Retrieving socket information!");
 		const webSocketDetails = await this.#_client.getConsoleWebSocket(this.#_serverId);
 		console.log("Attempting to connect to socket!");
 
 		if(!this.#_socket || (this.#_socket && this.#_socket.readyState != WebSocket.OPEN))
 		{
+			newSocket = true;
 			console.log("Opening socket!");
 			this.#_socket = new WebSocket(`${webSocketDetails.socket}?token=${webSocketDetails.token}`);
 
@@ -33,10 +35,15 @@ class PterodactylWebSocket extends EventEmitter
 
 		let self = this;
 
-		this.#_socket.once("open",()=>{
+		if(newSocket)
+		{
+			this.#_socket.once("open",()=>{
+				self.send("auth",webSocketDetails.token);
+				self.emit("open");
+			});
+		} else {
 			self.send("auth",webSocketDetails.token);
-			self.emit("open");
-		});
+		}
 	}
 
 	async #_onerror(err)
