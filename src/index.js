@@ -23,6 +23,27 @@ let idToPlayerNameMap = {};
 let onlineCount = 0;
 const MAX_PLAYER_COUNT = process.env.MAX_PLAYER_COUNT;
 
+function playerStatusReport()
+{
+	let statusReport = {
+		onlineCount: 0,
+		maxCount: MAX_PLAYER_COUNT,
+		onlineList: []
+	};
+	for(var userName of Object.keys(playerSessions))
+	{
+		if(playerSessions[userName] !== undefined)
+		{
+			if(playerSessions[userName].online)
+			{
+				statusReport.onlineCount++;
+				statusReport.onlineList.push(userName);
+			}
+		}
+	}
+	return statusReport;
+}
+
 const ClientVersionRegex = /^LogInit: Net CL: /;
 
 const LoginRequestRegex = /^\[([^\]]+)\]\[([^\]]+)\]LogNet: Login request: \?EntryTicket=[0-9A-F]+\?Name=(.+) userId: (.+):(\(EOS\)[0-9a-f]+\|[0-9a-f]+|\(STEAM\)[0-9]+) platform: (.+)/;
@@ -103,7 +124,7 @@ socket.on("console output",async (msg)=>{
 		onlineCount++;
 		await axios.post(process.env.DISCORD_WEBHOOK,{
 			...baseWebhook,
-			...Messages.PlayerJoined(userName,onlineCount,MAX_PLAYER_COUNT)
+			...Messages.PlayerJoined(userName,playerStatusReport())
 		});
 	}
 
@@ -126,13 +147,13 @@ socket.on("console output",async (msg)=>{
 				if(onlineCount>0) onlineCount--;
 				await axios.post(process.env.DISCORD_WEBHOOK,{
 					...baseWebhook,
-					...Messages.PlayerLeft(userName,onlineCount,MAX_PLAYER_COUNT)
+					...Messages.PlayerLeft(userName,playerStatusReport())
 				});
 			}
 		} else if(onlineCount>0) {
 			await axios.post(process.env.DISCORD_WEBHOOK,{
 				...baseWebhook,
-				...Messages.GenericPlayerLeft(onlineCount,MAX_PLAYER_COUNT)
+				...Messages.GenericPlayerLeft(playerStatusReport())
 			});
 		}
 	}

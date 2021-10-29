@@ -1,3 +1,5 @@
+const LIST_SEPARATOR = "\n";
+
 module.exports = {
 	ServerStatus: (status,old_status) => {
 		let action = status == old_status ? "currently" : "now";
@@ -49,12 +51,12 @@ module.exports = {
 		return {
 			embeds: [
 				{
-					description: `Current CL version ${satisfactoryVersion}`
+					description: `The server supports client build ${satisfactoryVersion}`
 				}
 			]
 		};
 	},
-	PlayerJoined: (userName,playerCount,maxPlayerCount) => {
+	PlayerJoined: (userName,statusReport) => {
 		return {
 			embeds: [
 				{
@@ -62,15 +64,15 @@ module.exports = {
 					description: `User '${userName}' has joined the game.`,
 					fields: [
 						{
-							name:"Online Players",
-							value: `${playerCount}/${maxPlayerCount}`
+							name: `Online Players (${statusReport.onlineCount}/${statusReport.maxCount})`,
+							value: statusReport.onlineList.join(LIST_SEPARATOR)
 						}
 					]
 				}
 			]
 		};
 	},
-	GenericPlayerLeft: (playerCount,maxPlayerCount) => {
+	GenericPlayerLeft: (statusReport) => {
 		return {
 			embeds: [
 				{
@@ -78,15 +80,15 @@ module.exports = {
 					description: `A user has left the game.`,
 					fields: [
 						{
-							name:"Online Players",
-							value: `${playerCount}/${maxPlayerCount}`
+							name: `Online Players (${statusReport.onlineCount}/${statusReport.maxCount})`,
+							value: statusReport.onlineList.join(LIST_SEPARATOR)
 						}
 					]
 				}
 			]
 		};
 	},
-	PlayerLeft: (userName,playerCount,maxPlayerCount) => {
+	PlayerLeft: (userName,statusReport) => {
 		return {
 			embeds: [
 				{
@@ -94,8 +96,8 @@ module.exports = {
 					description: `User '${userName}' has left the game.`,
 					fields: [
 						{
-							name:"Online Players",
-							value: `${playerCount}/${maxPlayerCount}`
+							name: `Online Players (${statusReport.onlineCount}/${statusReport.maxCount})`,
+							value: statusReport.onlineList.join(LIST_SEPARATOR)
 						}
 					]
 				}
