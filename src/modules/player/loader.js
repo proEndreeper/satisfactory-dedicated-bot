@@ -43,9 +43,21 @@ async function consoleOutputHandler(msg)
 	await connectionClosedHandler(strippedMessage, socket, moduleData);
 }
 
+async function statusHandler(status)
+{
+	if(status == "offline")
+	{
+		for(let player of moduleData.playerSessions)
+		{
+			player.online = false;
+		}
+	}
+}
+
 async function setupSocketListeners(pterosocket, botsocket)
 {
 	pterosocket.on("console output",consoleOutputHandler);
+	pterosocket.on("status",statusHandler);
 
 	socket = botsocket;
 }
