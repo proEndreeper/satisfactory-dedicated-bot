@@ -1,0 +1,5 @@
+id: server_status
+name: Server Status Module
+description: A module that watches the server socket for status updates and also checks for any messages detailing the current server version.
+loader: loader.js
+type: base_module

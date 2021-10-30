@@ -65,23 +65,7 @@ module.exports = {
 					fields: [
 						{
 							name: `Online Players (${statusReport.onlineCount}/${statusReport.maxCount})`,
-							value: statusReport.onlineList.join(LIST_SEPARATOR)
-						}
-					]
-				}
-			]
-		};
-	},
-	GenericPlayerLeft: (statusReport) => {
-		return {
-			embeds: [
-				{
-					color: 0xFF0000,
-					description: `A user has left the game.`,
-					fields: [
-						{
-							name: `Online Players (${statusReport.onlineCount}/${statusReport.maxCount})`,
-							value: statusReport.onlineList.join(LIST_SEPARATOR)
+							value: statusReport.onlineList.length>0?statusReport.onlineList.join(LIST_SEPARATOR):"\u200B"
 						}
 					]
 				}
@@ -97,7 +81,7 @@ module.exports = {
 					fields: [
 						{
 							name: `Online Players (${statusReport.onlineCount}/${statusReport.maxCount})`,
-							value: statusReport.onlineList.join(LIST_SEPARATOR)
+							value: statusReport.onlineList.length>0?statusReport.onlineList.join(LIST_SEPARATOR):"\u200B"
 						}
 					]
 				}

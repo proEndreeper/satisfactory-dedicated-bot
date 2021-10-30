@@ -1,9 +1,11 @@
 class SatisfactoryUser
 {
+	reference;
+	joinRequestId;
 	name;
 	identity = "(???)Unknown";
-	latestIdentity;
 	lastStateChange = "never";
+	entryTicket = null;
 	online = false;
 
 	constructor(name)

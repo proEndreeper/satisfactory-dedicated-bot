@@ -1,0 +1,4 @@
+id: base_module
+name: Base Module
+description: A basic module that is able to setup socket listeners and define global functions.
+loader: loader.js

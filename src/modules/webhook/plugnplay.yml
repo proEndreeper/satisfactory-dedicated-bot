@@ -1,0 +1,5 @@
+id: webhook
+name: Webhook Module
+description: A basic module that will listen for 'webhook' events and process webhooks.
+loader: loader.js
+type: base_module

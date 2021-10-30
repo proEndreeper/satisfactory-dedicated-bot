@@ -1,0 +1,5 @@
+id: players
+name: Players Module
+description: A module that watches the console and checks for player events.
+loader: loader.js
+type: base_module

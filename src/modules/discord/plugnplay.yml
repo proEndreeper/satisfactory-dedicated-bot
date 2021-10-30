@@ -1,0 +1,5 @@
+id: discord
+name: Discord Module
+description: A module that watches the bot socket for certain events and sends webhooks.
+loader: loader.js
+type: base_module

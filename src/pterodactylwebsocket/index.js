@@ -13,7 +13,12 @@ class PterodactylWebSocket extends EventEmitter
 		super();
 		this.#_client = new Nodeactyl.NodeactylClient(panelUrl,panelToken);
 		this.#_serverId = serverId;
-		this.#_connectWebsocket();
+	}
+
+	async connect()
+	{
+		if(this.#_socket && this.#_socket.readyState == WebSocket.OPEN) return;
+		await this.#_connectWebsocket();
 	}
 
 	async #_connectWebsocket()
@@ -23,7 +28,7 @@ class PterodactylWebSocket extends EventEmitter
 		const webSocketDetails = await this.#_client.getConsoleWebSocket(this.#_serverId);
 		console.log("Attempting to connect to socket!");
 
-		if(!this.#_socket || (this.#_socket && this.#_socket.readyState != WebSocket.OPEN))
+		if(!this.#_socket || this.#_socket.readyState != WebSocket.OPEN)
 		{
 			newSocket = true;
 			console.log("Opening socket!");
