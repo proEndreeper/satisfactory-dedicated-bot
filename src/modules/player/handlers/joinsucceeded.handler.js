@@ -20,7 +20,7 @@ module.exports = async (msg, socket, moduleData) => {
 	let userName = data[3];
 
 	let player = moduleData.playerSessions.filter((player)=>{
-		return player.name == userName && 
+		return player.name.indexOf(userName) === 0 && 
 				player.joinRequestId == data[2];
 	})[0];
 
