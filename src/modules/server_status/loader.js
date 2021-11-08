@@ -38,7 +38,7 @@ async function consoleOutputHandler(msg) {
 		debug(`Server is on version ${satisfactoryVersion}`);
 		socket.emit("server version",{
 			version: satisfactoryVersion
-		})
+		});
 	}
 }
 
@@ -61,8 +61,7 @@ module.exports = class PlayerLoader extends PluginLoaderBase {
 			setupSocketListeners: setupSocketListeners,
 			globFunctions: {
 				getSocketVersion
-			},
-			thisthing: true
+			}
 		};
 	}
 };
