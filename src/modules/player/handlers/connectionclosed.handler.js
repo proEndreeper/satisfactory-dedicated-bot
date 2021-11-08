@@ -36,6 +36,11 @@ module.exports = async (msg, socket, moduleData) => {
 		MessageReference++;
 		return;
 	}
+	
+	if(!player.online)
+	{
+		return;
+	}
 
 	player.lastStateChange = data[1];
 	player.online = false;
