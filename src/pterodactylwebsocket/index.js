@@ -24,14 +24,11 @@ class PterodactylWebSocket extends EventEmitter
 	async #_connectWebsocket()
 	{
 		let newSocket = false;
-		console.log("Retrieving socket information!");
 		const webSocketDetails = await this.#_client.getConsoleWebSocket(this.#_serverId);
-		console.log("Attempting to connect to socket!");
 
 		if(!this.#_socket || this.#_socket.readyState != WebSocket.OPEN)
 		{
 			newSocket = true;
-			console.log("Opening socket!");
 			this.#_socket = new WebSocket(`${webSocketDetails.socket}?token=${webSocketDetails.token}`);
 
 			this.#_socket.on("message",this.#_onmessage.bind(this));

@@ -20,7 +20,7 @@ process.on('uncaughtException', function(error) {
 const pterosocket = new PterodactylWebSocket(process.env.PANEL_URL,process.env.CLIENT_API_KEY, process.env.SERVER_ID);
 
 pterosocket.on("auth success",()=>{
-	console.log("Successfully authenticated!");
+	console.log("Startup Complete!");
 });
 
 console.log("Loading plugins...");
